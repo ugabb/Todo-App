@@ -23,13 +23,17 @@ const createTodo = async (req, res) => {
 };
 
 const editTodo = async (req, res) => {
-    try {
-        const {id: todoId} = req.params;
-        const todo = await Todo.findOneAndUpdate({_id: todoId},req.body);
-        res.status(200).json({ todo });
-    } catch (error) {
-        
-    }
+  try {
+    const { id: todoId } = req.params;
+    const todo = await Todo.findOne({ _id: todoId });
+
+    todo.completed ? todo.completed = false : todo.completed = true;
+    await todo.save();
+
+    res.status(200).json({ todo });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 const deleteTodo = async (req, res) => {
@@ -41,7 +45,7 @@ const deleteTodo = async (req, res) => {
       res.status(404).json({ msg: `No todo with this id: ${todoId}` });
     }
 
-    res.status(200).json({ todo: null, status:"Success" });
+    res.status(200).json({ todo: null, status: "Success" });
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -51,5 +55,5 @@ module.exports = {
   getAllTodos,
   createTodo,
   deleteTodo,
-  editTodo
+  editTodo,
 };

@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 import { useState, useEffect } from "react";
 
 import api from "./Api/api";
@@ -9,6 +10,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [textTodo, setTextTodo] = useState("");
   const [btn, setBtn] = useState(true);
+  const [selectedValue, setSelectedValue] = useState();
 
   const getAllTodos = async () => {
     const response = await api.get("/todos");
@@ -17,11 +19,9 @@ function App() {
 
   useEffect(() => {
     getAllTodos();
-  }, []);
+  }, [todos]);
 
-  // console.log(todos);
-
-  // creat todo
+  // create todo
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -38,14 +38,39 @@ function App() {
   };
 
   // Completed state
-  const handleCompleted = async (id) =>{
-    console.log(id)
+  const handleCompleted = async (id) => {
     try {
-      const response = await api.patch(`/todos/${id}`)
+      const response = await api.patch(`/todos/${id}`);
     } catch (error) {
-      
+      console.log(error);
     }
-  }
+  };
+
+  //delete todo
+  const deleteTodo = async (id) => {
+    try {
+      const response = await api.delete(`todos/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Filter Todos
+  const filterTodos = async (option) => {
+    const params = { completed: option };
+    const response = await api.get("/todos", { params });
+
+    if (response) {
+      setTodos(response.data.todo);
+      console.log("fafa", todos);
+    }
+  };
+
+  const handleFilterValue = (value) => {
+    setSelectedValue(value);
+    filterTodos(selectedValue);
+    console.log(selectedValue)
+  };
 
   // create button only available when exist some text to send
   useEffect(() => {
@@ -86,18 +111,23 @@ function App() {
         </form>
         <div className="flex-flex-col rounded bg-VeryDarkDesaturatedBlue">
           {/* // display todos */}
-          {
-            todos.map(todo => (
-              <Todo key={todo._id} id={todo._id} text={todo.text} completed={todo.completed} handleCompleted={handleCompleted}/>
-            ))
-          }
+          {todos.map((todo) => (
+            <Todo
+              key={todo._id}
+              id={todo._id}
+              text={todo.text}
+              completed={todo.completed}
+              handleCompleted={handleCompleted}
+              deleteTodo={deleteTodo}
+            />
+          ))}
           <div className="flex justify-between p-3 text-VeryDarkGrayishBlue">
-            <p>5 items left</p>
+            <p>{todos.length} items left</p>
             <p>Clear Completed</p>
           </div>
         </div>
 
-        <Filter />
+        <Filter handleFilterValue={handleFilterValue} />
       </div>
     </div>
   );
