@@ -33,16 +33,13 @@ The project is still in development and the next updates will be handled in the 
 <div>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-plain.svg" width="100px" />
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="100px" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" width="100px" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" width="100px" />        
 </div>
 
           
           
 
-## 🤝 Colaboradores
-
-Agradecemos às seguintes pessoas que contribuíram para este projeto:
-
+## 🤝 Feito por:
 <table>
   <tr>
     <td align="center">
