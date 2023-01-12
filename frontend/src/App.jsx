@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 
 import api from "./Api/api";
@@ -10,20 +9,20 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [textTodo, setTextTodo] = useState("");
   const [btn, setBtn] = useState(true);
-  const [filterTodo, setFilterTodo] = useState();
+  const [filterTodo, setFilterTodo] = useState("all");
 
   const getAllTodos = async () => {
-    const response = await api.get("/todos",{
-      params:{
-        completed: filterTodo
-      }
+    const response = await api.get("/todos", {
+      params: {
+        completed: filterTodo,
+      },
     });
     setTodos(response.data.todo);
   };
 
   useEffect(() => {
     getAllTodos();
-  }, [todos,filterTodo]);
+  }, [todos]);
 
   // create todo
   const handleSubmit = async (e) => {
@@ -53,7 +52,11 @@ function App() {
   //delete todo
   const deleteTodo = async (id) => {
     try {
-      const response = await api.delete(`todos/${id}`);
+      const response = await api.delete(`todos/${id}`,{
+        params:{
+          completed:filterTodo
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +64,7 @@ function App() {
 
   const handleFilterValue = (option) => {
     console.log(option);
-    setFilterTodo(option)
+    setFilterTodo(option);
   };
 
   // create button only available when exist some text to send
@@ -76,22 +79,31 @@ function App() {
     btnAvailable();
   }, [textTodo]);
 
+
   return (
-    <div className="flex flex-col bg-VeryDarkBlue h-screen" id="nav-background">
+    <div
+      className={`flex flex-col  bg-VeryDarkBlue h-screen`}
+      id="nav-background-dark"
+    >
       <Navbar />
       <div className="flex flex-col space-y-4 py-2 px-5 lg:w-1/2 lg:mx-auto">
         <form
           onSubmit={handleSubmit}
-          className="flex items-center justify-start space-x-4 rounded p-4 bg-VeryDarkDesaturatedBlue"
+          className={`flex items-center justify-between space-x-4  rounded p-4 bg-VeryDarkDesaturatedBlue`}
         >
-          <div className="w-5 h-5 rounded-full border"></div>
-          <input
-            type="text"
-            className="bg-transparent focus:text-LightGrayishBlue text-sm focus:border-none w-screen "
-            placeholder="Create a new Todo..."
-            value={textTodo}
-            onChange={(e) => setTextTodo(e.target.value)}
-          />
+          <div className="flex items-center gap-2">
+            <div
+              className={`w-5 h-5 rounded-full border border-gray-600`}
+            ></div>
+            <input
+              type="text"
+              className="bg-transparent focus:text-LightGrayishBlue text-sm focus:border-none"
+              placeholder="Create a new Todo..."
+              value={textTodo}
+              onChange={(e) => setTextTodo(e.target.value)}
+            />
+          </div>
+
           <button
             disabled={btn}
             type="submit"
@@ -101,7 +113,9 @@ function App() {
             Create
           </button>
         </form>
-        <div className="flex-flex-col rounded bg-VeryDarkDesaturatedBlue">
+        <div
+          className={`flex-flex-col rounded bg-VeryDarkDesaturatedBlue drop-shadow-lg`}
+        >
           {/* // display todos */}
           {todos.map((todo) => (
             <Todo
@@ -119,7 +133,10 @@ function App() {
           </div>
         </div>
 
-        <Filter handleFilterValue={handleFilterValue} />
+        <Filter
+          handleFilterValue={handleFilterValue}
+          filterTodo={filterTodo}
+        />
       </div>
     </div>
   );

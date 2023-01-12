@@ -7,7 +7,7 @@ const Todo = ({ text, completed, handleCompleted, id, deleteTodo }) => {
     
 
   return (
-    <div className="flex justify-between items-center border-b border-VeryDarkGrayishBlue p-5 ">
+    <div className={`flex justify-between items-center border-b border-VeryDarkGrayishBlueLight p-5 `}>
       <div className="flex gap-5">
         {completed ? (
           <div
@@ -19,7 +19,7 @@ const Todo = ({ text, completed, handleCompleted, id, deleteTodo }) => {
         ) : (
           <div
             onClick={() => handleCompleted(id)}
-            className=" h-6 w-6 border border-LightGrayishBlue rounded-full"
+            className={` h-6 w-6 border border-gray-600 rounded-full`}
           ></div>
         )}
 
