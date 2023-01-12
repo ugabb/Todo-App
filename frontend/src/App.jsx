@@ -1,4 +1,4 @@
-import { get } from "mongoose";
+
 import { useState, useEffect } from "react";
 
 import api from "./Api/api";
@@ -10,16 +10,20 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [textTodo, setTextTodo] = useState("");
   const [btn, setBtn] = useState(true);
-  const [selectedValue, setSelectedValue] = useState();
+  const [filterTodo, setFilterTodo] = useState();
 
   const getAllTodos = async () => {
-    const response = await api.get("/todos");
+    const response = await api.get("/todos",{
+      params:{
+        completed: filterTodo
+      }
+    });
     setTodos(response.data.todo);
   };
 
   useEffect(() => {
     getAllTodos();
-  }, [todos]);
+  }, [todos,filterTodo]);
 
   // create todo
   const handleSubmit = async (e) => {
@@ -55,21 +59,9 @@ function App() {
     }
   };
 
-  // Filter Todos
-  const filterTodos = async (option) => {
-    const params = { completed: option };
-    const response = await api.get("/todos", { params });
-
-    if (response) {
-      setTodos(response.data.todo);
-      console.log("fafa", todos);
-    }
-  };
-
-  const handleFilterValue = (value) => {
-    setSelectedValue(value);
-    filterTodos(selectedValue);
-    console.log(selectedValue)
+  const handleFilterValue = (option) => {
+    console.log(option);
+    setFilterTodo(option)
   };
 
   // create button only available when exist some text to send

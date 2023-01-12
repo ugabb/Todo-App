@@ -2,8 +2,14 @@ const Todo = require("../models/TodoSchema");
 
 const getAllTodos = async (req, res) => {
   try {
-    const todo = await Todo.find({});
-    res.status(200).json({ todo });
+    const { completed } = req.query;
+    if (completed === "true" || completed === "false") {
+      const todo = await Todo.find({ completed: completed });
+      res.status(200).json({ todo });
+    } else {
+      const todo = await Todo.find({});
+      res.status(200).json({ todo });
+    }
   } catch (error) {
     res.status(500).json({ msg: error });
   }
@@ -27,7 +33,7 @@ const editTodo = async (req, res) => {
     const { id: todoId } = req.params;
     const todo = await Todo.findOne({ _id: todoId });
 
-    todo.completed ? todo.completed = false : todo.completed = true;
+    todo.completed ? (todo.completed = false) : (todo.completed = true);
     await todo.save();
 
     res.status(200).json({ todo });
