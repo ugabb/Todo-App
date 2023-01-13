@@ -10,7 +10,7 @@ https://user-images.githubusercontent.com/76067595/212192026-aca28f3c-6860-488d-
 
 
 
-> A Todo App where you can stay organize and simple!. 
+> A Todo App where you can stay organized and simple!. 
 
 ### Adjust and improvement
 
